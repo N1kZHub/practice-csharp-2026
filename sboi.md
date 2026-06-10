@@ -8,15 +8,15 @@
 
 ```mermaid
 classDiagram
-    direction TB
     
     class FailureType {
-        <<enumeration>>
         UnexpectedShutdown
         ShortNonResponding
         HardwareFailures
         ConnectionProblems
     }
+    
+    <<enumeration>> FailureType
 
     class Device {
         +int Id
@@ -31,10 +31,11 @@ classDiagram
     }
     
     class ReportMaker {
-        +FindDevicesFailedBeforeDate() List~string~
-        +FindDevicesFailedBeforeDateObsolete() List~string~
+        +FindDevicesFailedBeforeDate(DateTime untilDate, IEnumerable~Device~ devices, IEnumerable~Failure~ failures) List~string~
+        +FindDevicesFailedBeforeDateObsolete(int day, int month, int year, int[] failureTypes, int[] deviceId, object[][] times, List~Dictionary~ devices) List~string~
     }
     
-    Failure ..> FailureType : содержит тип сбоя
+    Failure --> FailureType : содержит тип сбоя
     ReportMaker ..> Device : извлекает имена устройств
     ReportMaker ..> Failure : анализирует список сбоев
+```
