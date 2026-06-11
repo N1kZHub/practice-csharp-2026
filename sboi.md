@@ -21,18 +21,20 @@ classDiagram
     class Device {
         +int Id
         +string Name
+        +Device(int id, string name)
     }
     
     class Failure {
         +int DeviceId
         +FailureType Type
         +DateTime Time
+        +Failure(int deviceId, FailureType type, DateTime time)
         +IsSerious() bool
     }
     
     class ReportMaker {
-        +FindDevicesFailedBeforeDate(DateTime untilDate, IEnumerable~Device~ devices, IEnumerable~Failure~ failures) List~string~
-        +FindDevicesFailedBeforeDateObsolete(int day, int month, int year, int[] failureTypes, int[] deviceId, object[][] times, List~Dictionary~ devices) List~string~
+        +static List~string~ FindDevicesFailedBeforeDate(DateTime untilDate, Device[] devices, Failure[] failures)
+        +static List~string~ FindDevicesFailedBeforeDateObsolete(int day, int month, int year, int[] failureTypes, int[] deviceId, object[][] times, List~Dictionary~ devices)
     }
     
     Failure --> FailureType : содержит тип сбоя
