@@ -8,7 +8,6 @@
 
 ```mermaid
 classDiagram
-    direction LR
     
     class Point {
         +double X
@@ -37,7 +36,8 @@ classDiagram
     }
     
     class Robot~TCommand~ {
-        +Start(int) IEnumerable~string~
+        +Start(int steps) IEnumerable~string~
+        +Create(IRobotAI~TCommand~, IDevice~TCommand~) Robot~TCommand~$
     }
     
     class ShooterAI {
@@ -56,15 +56,15 @@ classDiagram
         +ExecuteCommand(IShooterMoveCommand) string
     }
     
-    IMoveCommand <|-- IShooterMoveCommand : наследует
-    IMoveCommand --> Point : содержит
-    IShooterMoveCommand --> Point : содержит
+    IMoveCommand <|-- IShooterMoveCommand : расширяет
+    IMoveCommand o-- Point : агрегирует
+    IShooterMoveCommand o-- Point : агрегирует
     
-    IRobotAI~TCommand~ <|-- ShooterAI : реализует
-    IRobotAI~TCommand~ <|-- BuilderAI : реализует
+    IRobotAI~TCommand~ <|.. ShooterAI : реализует
+    IRobotAI~TCommand~ <|.. BuilderAI : реализует
     
-    IDevice~TCommand~ <|-- Mover : реализует
-    IDevice~TCommand~ <|-- ShooterMover : реализует
+    IDevice~TCommand~ <|.. Mover : реализует
+    IDevice~TCommand~ <|.. ShooterMover : реализует
     
     Robot~TCommand~ *-- IRobotAI~TCommand~ : композиция
     Robot~TCommand~ *-- IDevice~TCommand~ : композиция
