@@ -1,9 +1,8 @@
 # Практика "Роботы"
 
-## Описание
+## Описание предметной области
 
 Применены дженерики с ковариацией и контрвариацией для создания архитектуры роботов. AI генерирует команды (ковариация `out`), Device выполняет команды (контрвариация `in`).
-
 ## Диаграмма классов
 
 ```mermaid
@@ -25,17 +24,19 @@ classDiagram
         +ShouldHide bool
     }
     
-    class IRobotAI~TCommand~ {
+    class IRobotAI~out TCommand~ {
         <<interface>>
         +GetCommand() TCommand
     }
     
-    class IDevice~TCommand~ {
+    class IDevice~in TCommand~ {
         <<interface>>
         +ExecuteCommand(TCommand) string
     }
     
     class Robot~TCommand~ {
+        -IRobotAI~TCommand~ _ai
+        -IDevice~TCommand~ _device
         +Start(int steps) IEnumerable~string~
         +Create(IRobotAI~TCommand~, IDevice~TCommand~) Robot~TCommand~$
     }
@@ -56,15 +57,15 @@ classDiagram
         +ExecuteCommand(IShooterMoveCommand) string
     }
     
-    IMoveCommand <|-- IShooterMoveCommand : расширяет
-    IMoveCommand o-- Point : агрегирует
-    IShooterMoveCommand o-- Point : агрегирует
+    IMoveCommand <|-- IShooterMoveCommand : наследует
+    IMoveCommand --> Point : использует
+    IShooterMoveCommand --> Point : использует
     
-    IRobotAI~TCommand~ <|.. ShooterAI : реализует
-    IRobotAI~TCommand~ <|.. BuilderAI : реализует
+    IRobotAI~IShooterMoveCommand~ <|.. ShooterAI : реализует
+    IRobotAI~IMoveCommand~ <|.. BuilderAI : реализует
     
-    IDevice~TCommand~ <|.. Mover : реализует
-    IDevice~TCommand~ <|.. ShooterMover : реализует
+    IDevice~IMoveCommand~ <|.. Mover : реализует
+    IDevice~IShooterMoveCommand~ <|.. ShooterMover : реализует
     
     Robot~TCommand~ *-- IRobotAI~TCommand~ : композиция
     Robot~TCommand~ *-- IDevice~TCommand~ : композиция
