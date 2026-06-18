@@ -10,14 +10,12 @@
 classDiagram
     direction TB
 
-    %% Точка входа
     class DotGraphBuilder {
         <<static>>
         +DirectedGraph(name) GraphBuilder
         +UndirectedGraph(name) GraphBuilder
     }
 
-    %% Основной построитель
     class GraphBuilder {
         -Graph graph
         -GraphNode lastNode
@@ -28,7 +26,6 @@ classDiagram
         +GetGraph() Graph
     }
 
-    %% Базовый класс для конфигураторов
     class FluentBuilderBase {
         <<abstract>>
         #GraphBuilder builder
@@ -36,7 +33,6 @@ classDiagram
         +AddEdge(source, dest) EdgeConfigurator
     }
 
-    %% Конфигураторы
     class NodeConfigurator {
         -GraphNode node
         +With(configure) GraphBuilder
@@ -49,7 +45,6 @@ classDiagram
         +Build() string
     }
 
-    %% Атрибуты
     class NodeAttributes {
         -Dictionary~string, string~ attributes
         +Color(color) NodeAttributes
@@ -66,7 +61,6 @@ classDiagram
         +Weight(weight) EdgeAttributes
     }
 
-    %% Инфраструктура
     class Graph {
         +AddNode(name) GraphNode
         +AddEdge(source, dest) GraphEdge
@@ -83,7 +77,6 @@ classDiagram
         +Attributes
     }
 
-    %% Enum
     class NodeShape {
         <<enumeration>>
         Box
@@ -93,7 +86,6 @@ classDiagram
         Record
     }
 
-    %% Связи
     DotGraphBuilder ..> GraphBuilder : создаёт
     GraphBuilder --> Graph : использует
     FluentBuilderBase <|-- NodeConfigurator : наследует
@@ -107,7 +99,6 @@ classDiagram
     NodeConfigurator --> GraphNode : хранит ссылку
     EdgeConfigurator --> GraphEdge : хранит ссылку
 
-    %% Fluent API цепочки
     note for GraphBuilder "Возвращает конфигураторы\nдля продолжения цепочки"
     note for NodeConfigurator "With() возвращает\nGraphBuilder для\nпродолжения цепочки"
     note for EdgeConfigurator "With() возвращает\nGraphBuilder для\nпродолжения цепочки"
