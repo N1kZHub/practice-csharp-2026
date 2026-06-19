@@ -8,7 +8,7 @@
 
 ```mermaid
 classDiagram
-    direction TB
+    direction LR
 
     class DotGraphBuilder {
         <<static>>
@@ -93,6 +93,7 @@ classDiagram
     GraphBuilder ..> FluentBuilderBase : зависимость (создаёт конфигураторы)
     NodeConfigurator ..> NodeAttributes : конфигурирует
     EdgeConfigurator ..> EdgeAttributes : конфигурирует
+    NodeAttributes ..> NodeShape : использует в методе Shape()
     Graph ..> GraphNode : создаёт
     Graph ..> GraphEdge : создаёт
     NodeConfigurator --> GraphNode : хранит ссылку
