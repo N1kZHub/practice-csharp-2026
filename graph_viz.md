@@ -87,19 +87,19 @@ classDiagram
     }
 
     DotGraphBuilder ..> GraphBuilder : создаёт
-    GraphBuilder --> Graph : использует
+    GraphBuilder --> Graph : ассоциация (использует)
     FluentBuilderBase <|-- NodeConfigurator : наследует
     FluentBuilderBase <|-- EdgeConfigurator : наследует
-    GraphBuilder --> FluentBuilderBase : создаёт
-    NodeConfigurator --> NodeAttributes : конфигурирует
-    EdgeConfigurator --> EdgeAttributes : конфигурирует
-    GraphBuilder *-- Graph : агрегирует
-    Graph --> GraphNode : создаёт
-    Graph --> GraphEdge : создаёт
+    GraphBuilder ..> FluentBuilderBase : зависимость (создаёт конфигураторы)
+    NodeConfigurator ..> NodeAttributes : конфигурирует
+    EdgeConfigurator ..> EdgeAttributes : конфигурирует
+    Graph ..> GraphNode : создаёт
+    Graph ..> GraphEdge : создаёт
     NodeConfigurator --> GraphNode : хранит ссылку
     EdgeConfigurator --> GraphEdge : хранит ссылку
 
-    note for GraphBuilder "Возвращает конфигураторы\nдля продолжения цепочки"
-    note for NodeConfigurator "With() возвращает\nGraphBuilder для\nпродолжения цепочки"
-    note for EdgeConfigurator "With() возвращает\nGraphBuilder для\nпродолжения цепочки"
+    note for GraphBuilder "Возвращает конфигураторы для продолжения цепочки"
+    note for NodeConfigurator "With() возвращает GraphBuilder для продолжения цепочки"
+    note for EdgeConfigurator "With() возвращает GraphBuilder для продолжения цепочки"
+    note for FluentBuilderBase "Базовый класс для конфигураторов. Дублирует методы для переиспользования"
 ```
